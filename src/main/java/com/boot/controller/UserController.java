@@ -35,7 +35,11 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/user/add")
-	public String userAddPage() {
+	public String userAddPage(Model model) {
+		
+		// ==== Use For Check Status for Single Page====//
+		model.addAttribute("addStatus", true);		
+		model.addAttribute("user", new User());
 		return "user/adduser";
 	}
 
@@ -58,7 +62,9 @@ public class UserController {
 		System.out.println("Id: " + id);
 		User user = userService.findById(id);
 		model.addAttribute("user", user);
-		return "user/edituser";
+		model.addAttribute("addStatus", false);
+		//return "user/edituser";
+		return "user/adduser";
 	}
 
 	@RequestMapping(value = "/user/update", method = RequestMethod.POST)

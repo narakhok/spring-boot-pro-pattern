@@ -1,31 +1,40 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1"/>
+<meta charset="ISO-8859-1" />
 <title>Add User Page</title>
-<link rel="stylesheet" href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css"/>
+<link rel="stylesheet"
+	href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
 </head>
 <body>
 	<div class="container">
-		<h2>Add User</h2><hr/>
-		<form action="/user/add" method="post">
+		<h2 th:text="${ addStatus==true?'Add User': 'Update User'}">Add
+			User</h2>
+		<hr />
+
+		<!-- 	// ======== Change Action for detect add or update =======/ -->
+		<form th:action="${addStatus==true?'/user/add' : '/user/update'}"
+			method="post" th:object="${user}">
 			<div class="form-group">
-				<label>Id:</label> <input type="number"
-					class="form-control" name="id"/>
+				<label>Id:</label> <input type="number" class="form-control"
+					name="id" th:value="*{id}" />
+					
+					<!-- th:value="*{id}"  -->
 			</div>
 			<div class="form-group">
-				<label>Name:</label> <input type="text"
-					class="form-control" name="name"/>
+				<label>Name:</label> <input type="text" class="form-control"
+					th:field="*{name}" />
+					<!-- th:field="*{name}"  -->
 			</div>
 			<div class="form-group">
-				<label>Gender:</label> <input type="text"
-					class="form-control" name="gender"/>
+				<label>Gender:</label> <input type="text" class="form-control"
+					name="gender" th:value="*{gender}" />
 			</div>
 			<div class="form-group">
-				<label>Image:</label> <input type="text"
-					class="form-control" name="image"/>
+				<label>Image:</label> <input type="text" class="form-control"
+					name="image" th:value="*{image}" />
 			</div>
-			<button type="submit" class="btn btn-default">Add User</button>
+			<button type="submit" class="btn btn-default" th:text="${addStatus==true?'Add':'Update'}">Add User</button>
 		</form>
 	</div>
 </body>
