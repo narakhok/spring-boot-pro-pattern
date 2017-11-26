@@ -3,8 +3,10 @@ package com.boot.repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.boot.model.User;
+import org.springframework.stereotype.Repository;
 
+import com.boot.model.User;
+@Repository
 public class UserRepositoryImpl implements UserRepository {
 
 	private List<User> users = new ArrayList<>();
