@@ -2,9 +2,13 @@ package com.boot.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -42,9 +46,19 @@ public class UserController {
 		model.addAttribute("user", new User());
 		return "user/adduser";
 	}
-
+// Add vilidator we user @Valid and BindingResult to show resutl of error
 	@RequestMapping(value = "/user/add", method = RequestMethod.POST)
-	public String actionAddUser(User user) {
+	public String actionAddUser(Model model,@Valid User user, BindingResult bindingResult) {
+		
+		if(bindingResult.hasErrors()){
+			for(FieldError error: bindingResult.getFieldErrors()){
+				System.out.println(error.getField() + ":"+error.getField());
+			}
+			
+			model.addAttribute("addStatus", true);
+			model.addAttribute("user", user);
+			return "/user/adduser";
+		}
 		System.out.println(user);
 		userService.save(user);
 		return "redirect:/user";

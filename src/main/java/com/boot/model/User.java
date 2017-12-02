@@ -1,8 +1,14 @@
 package com.boot.model;
 
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class User {
 	private int id;
+	@NotEmpty(message="Please Input your Name")
 	private String name;
+	@Size(min=1,max=1)
 	private String gender;
 	private String image;
 
