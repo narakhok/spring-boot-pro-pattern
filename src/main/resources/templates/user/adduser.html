@@ -14,9 +14,11 @@
 
 		<!-- 	// ======== Change Action for detect add or update =======/ -->
 		<form th:action="${addStatus==true?'/user/add' : '/user/update'}"
-			method="post" th:object="${user}">
-			
-			<ul><li th:each="err:${#fields.errors('*')}" th:text="$err"></li></ul>
+			method="post" th:object="${user}" enctype="multipart/form-data">
+
+			<ul>
+				<li th:each="err:${#fields.errors('*')}" th:text="$err"></li>
+			</ul>
 			<div class="form-group">
 				<label>Id:</label> <input type="number" class="form-control"
 					name="id" th:value="*{id}" />
@@ -39,11 +41,18 @@
 			<div class="form-group">
 				<label>Image:</label> <input type="text" class="form-control"
 					name="image" th:value="*{image}" />
+				<table>
+					<tr>
+						<td>File to upload:</td>
+						<td><input type="file" name="file" /></td>
+					</tr>
+					
+				</table>
 			</div>
 			<button type="submit" class="btn btn-default"
 				th:text="${addStatus==true?'Add':'Update'}">Add User</button>
-				
-				
+
+
 		</form>
 	</div>
 </body>

@@ -13,14 +13,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.boot.model.User;
+import com.boot.service.FileUploadService;
 import com.boot.service.UserService;
 
 @Controller
 public class UserController {
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private FileUploadService fileUpload;
 
 	@RequestMapping(value ={"/","/user"})
 	public String userPage(Model model) {
@@ -48,7 +52,7 @@ public class UserController {
 	}
 // Add vilidator we user @Valid and BindingResult to show resutl of error
 	@RequestMapping(value = "/user/add", method = RequestMethod.POST)
-	public String actionAddUser(Model model,@Valid User user, BindingResult bindingResult) {
+	public String actionAddUser(@RequestParam("file")MultipartFile file,Model model,@Valid User user, BindingResult bindingResult) {
 		
 		if(bindingResult.hasErrors()){
 			for(FieldError error: bindingResult.getFieldErrors()){
@@ -59,6 +63,9 @@ public class UserController {
 			model.addAttribute("user", user);
 			return "/user/adduser";
 		}
+		String filePath = fileUpload.upload(file);
+		user.setImage(filePath);
+		
 		System.out.println(user);
 		userService.save(user);
 		return "redirect:/user";
@@ -82,9 +89,11 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/user/update", method = RequestMethod.POST)
-	public String updateUser(User user) {
+	public String updateUser(@RequestParam("file")MultipartFile file,User user) {
 		System.out.println(user);
 		userService.update(user);
+		String filePath = fileUpload.upload(file);
+		user.setImage(filePath);		
 		return "redirect:/user";
 	}
 }
